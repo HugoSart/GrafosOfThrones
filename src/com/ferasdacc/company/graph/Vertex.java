@@ -16,6 +16,7 @@ public class Vertex {
     Color color = Color.WHITE;
     int dist = 2_147_483_647;
     Vertex pred = null;
+    int d;
     int low;
     int f;
 
@@ -41,7 +42,8 @@ public class Vertex {
     public void reset() {
         color = Color.WHITE;
         pred = null;
-        dist = 0;
+        dist = 2_147_483_647;
+        d = 0;
     }
 
     public void update(Color c, int d, Vertex v) {

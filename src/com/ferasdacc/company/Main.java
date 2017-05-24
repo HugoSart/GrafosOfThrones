@@ -15,6 +15,8 @@ public class Main {
             graph.printVerticesEdges();
             System.out.println("Distance: " + graph.distanceBetwen("ELIA", "LOTHAR"));
             graph.getVertex("ARYA");
+            graph.printArticulationVertices();
+            graph.printBridges();
         } catch (IOException e) {
             e.printStackTrace();
         }

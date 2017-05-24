@@ -43,31 +43,71 @@ public class Graph {
 
     }
 
-    public void getArticulatoinVertices_aux(Vertex u) {
+    public void printArticulationVertices() {
+        time = 0;
+        System.out.println("Articulation points:");
+        printArticulationVertices_aux(vertices.first());
+        reset();
+    }
+
+    private void printArticulationVertices_aux(Vertex u) {
         time++;
         u.color = Color.GRAY;
-        u.low = time;
+        u.low = u.d = time;
 
         for (Vertex v : u.edges()) {
             if (v.color == Color.WHITE) {
                 v.pred = u;
-                getArticulatoinVertices_aux(v);
+                printArticulationVertices_aux(v);
 
                 if (u.pred == null) {
                     if (u.edges().contains(v) && u.edges().size() > 1) {
-                        System.out.println("\t" + u.toString());
+                        System.out.println("\t" + u);
                     }
                 } else {
                     u.low = Math.min(u.low, v.low);
-                    if (v.low >= u.dist)
-                        System.out.println("\t" + u.toString());
+                    if (v.low >= u.d)
+                        System.out.println("\t" + u);
                 }
 
             } else {
-                if (v != u.pred && v.dist < u.dist)
-                    u.low = Math.min(u.low, v.dist);
+                if (v != u.pred && v.d < u.d)
+                    u.low = Math.min(u.low, v.d);
             }
         }
+        u.color = Color.BLACK;
+        time++;
+        u.f = time;
+
+    }
+
+    public void printBridges() {
+        time = 0;
+        System.out.println("Bridges:");
+        printArticulationVertices_aux(vertices.last());
+        reset();
+    }
+
+    private void printBridges_aux(Vertex u) {
+        time++;
+        u.color = Color.GRAY;
+        u.low = u.d = time;
+
+        for (Vertex v : u.edges()) {
+            if (v.color == Color.WHITE) {
+                v.pred = u;
+                printBridges_aux(v);
+                u.low = Math.min(u.low, v.low);
+
+                if (v.low > u.d)
+                    System.out.println("\t" + u);
+
+            } else {
+                if (v != u.pred && v.d < u.d)
+                    u.low = Math.min(u.low, v.d);
+            }
+        }
+
         u.color = Color.BLACK;
         time++;
         u.f = time;
