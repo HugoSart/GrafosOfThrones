@@ -43,14 +43,15 @@ public class Graph {
 
     }
 
-    public void printArticulationVertices() {
+    public SortedSet<Vertex> articulationVertices() {
         time = 0;
-        System.out.println("Articulation points:");
-        printArticulationVertices_aux(vertices.first());
+        SortedSet<Vertex> vAux = new TreeSet<Vertex>(Comparator.comparing(String::valueOf));
+        articulationVertices_aux(vertices.first(), vAux);
         reset();
+        return vAux;
     }
 
-    private void printArticulationVertices_aux(Vertex u) {
+    private void articulationVertices_aux(Vertex u, SortedSet<Vertex> vAux) {
         time++;
         u.color = Color.GRAY;
         u.low = u.d = time;
@@ -58,16 +59,16 @@ public class Graph {
         for (Vertex v : u.edges()) {
             if (v.color == Color.WHITE) {
                 v.pred = u;
-                printArticulationVertices_aux(v);
+                articulationVertices_aux(v, vAux);
 
                 if (u.pred == null) {
-                    if (u.edges().contains(v) && u.edges().size() > 1) {
-                        System.out.println("\t" + u);
+                    if (u.edges().contains(v) && u.edges().size() == 2) {
+                        vAux.add(u);
                     }
                 } else {
                     u.low = Math.min(u.low, v.low);
                     if (v.low >= u.d)
-                        System.out.println("\t" + u);
+                        vAux.add(u);
                 }
 
             } else {
@@ -81,14 +82,15 @@ public class Graph {
 
     }
 
-    public void printBridges() {
+    public List<Edge> bridges() {
         time = 0;
-        System.out.println("Bridges:");
-        printArticulationVertices_aux(vertices.last());
+        List<Edge> vAux = new ArrayList<>();
+        bridges_aux(vertices.last(), vAux);
         reset();
+        return vAux;
     }
 
-    private void printBridges_aux(Vertex u) {
+    private void bridges_aux(Vertex u, List<Edge> edges) {
         time++;
         u.color = Color.GRAY;
         u.low = u.d = time;
@@ -96,11 +98,11 @@ public class Graph {
         for (Vertex v : u.edges()) {
             if (v.color == Color.WHITE) {
                 v.pred = u;
-                printBridges_aux(v);
+                bridges_aux(v, edges);
                 u.low = Math.min(u.low, v.low);
 
                 if (v.low > u.d)
-                    System.out.println("\t" + u);
+                    edges.add(new Edge(u, v));
 
             } else {
                 if (v != u.pred && v.d < u.d)
