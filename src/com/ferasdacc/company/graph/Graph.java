@@ -62,18 +62,20 @@ public class Graph {
                 articulationVertices_aux(v, vAux);
 
                 if (u.pred == null) {
-                    if (u.edges().contains(v) && u.edges().size() == 2) {
+                    if (u.edges().contains(v) && u.edges().size() >= 2) {
                         vAux.add(u);
                     }
                 } else {
                     u.low = Math.min(u.low, v.low);
-                    if (v.low >= u.d)
+                    if (v.low >= u.d) {
                         vAux.add(u);
+                    }
                 }
 
             } else {
-                if (v != u.pred && v.d < u.d)
+                if (v != u.pred && v.d < u.d) {
                     u.low = Math.min(u.low, v.d);
+                }
             }
         }
         u.color = Color.BLACK;
@@ -207,10 +209,23 @@ public class Graph {
 
         int dist = v2.dist;
 
+        printAux(v1, v2);
+
         reset();
 
         return dist;
 
+    }
+
+    private void printAux(Vertex v1, Vertex v2) {
+        if (v1 == v2)
+            System.out.print(v1 + " ");
+        else
+            if (v2.pred == null) System.out.print("Não existe caminho.");
+            else {
+                printAux(v1, v2.pred);
+                System.out.print(v2 + " ");
+            }
     }
 
     public int distanceBetwen(String s1, String s2) {

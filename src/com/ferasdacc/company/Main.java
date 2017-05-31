@@ -21,17 +21,22 @@ public class Main {
 
             SortedSet<Vertex> vAux = graph.articulationVertices();
 
-            System.out.println("Articulation vertices: ");
+            System.out.println("Articulation vertices (" + vAux.size() + "): ");
             for (Vertex v : vAux) {
                 System.out.println("\t" + v);
             }
 
             List<Edge> eAux = graph.bridges();
 
-            System.out.println("Bridges: ");
+            System.out.println("Bridges (" + eAux.size() + "): ");
             for (Edge e : eAux) {
                 System.out.println("\t" + e.v1 + ", " + e.v2);
             }
+
+            System.out.println("Minimo: " + graph.distanceBetwen("STANNIS", "DAVOS"));
+            System.out.println("Minimo: " + graph.distanceBetwen("ARYA", "STANNIS"));
+            System.out.println("Minimo: " + graph.distanceBetwen("JON", "MERYN"));
+            System.out.println("Minimo: " + graph.distanceBetwen("ELIA", "LOTHAR"));
         } catch (IOException e) {
             e.printStackTrace();
         }

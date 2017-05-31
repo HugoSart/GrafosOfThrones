@@ -14,7 +14,7 @@ public class Vertex {
     private String name;
 
     Color color = Color.WHITE;
-    int dist = 2_147_483_647;
+    int dist = -1;
     Vertex pred = null;
     int d;
     int low;
